@@ -16,11 +16,27 @@ const Dynamic = {
 		next();
 	}
 }
-const Child = {template:`<div>Child component : I'm Child Route of Dynamic</div>`}
+const Child = {template:`<div>Child component : I'm Child Route of Dynamic </div>`}
 const Child1 = {template:`<div>Child1 了解一下</div>`}
 
 //const ChildEmpty = {template:`<div>I'm emptyChildRouter</div>`}
-const ChildEmpty = {template:``} //template可为空
+const ChildEmpty = {
+	template:`
+		<div>
+			child is empty
+		</div>
+	`
+} //template可为空
+
+const DynamicChildrenEmpty = {
+	template:`
+		<div>
+			<div>Dynamic not exist id</div>
+			<router-link :to="{name:'Dynamic Route',params:{id:'1111'}}">Go to the Child</router-link>
+		</div>
+	`
+} //template可为空
+
 
 //2. 定义路由
 //每一个路由都应该映射一个组件
@@ -28,6 +44,7 @@ const ChildEmpty = {template:``} //template可为空
 const routes = [
 	{path:'/foo', component: Foo, name:'Foo Route'},
 	{path:'/bar', component: Bar, name:'Bar Route'},
+	{path:'/dynamic', component: DynamicChildrenEmpty, name:'Dynamic no Children Route'},
 	// 动态路径参数 以冒号开头
 	{path:'/dynamic/:id', component: Dynamic, name:'Dynamic Route',
 		children:[
@@ -79,7 +96,14 @@ const routes = [
 //3. 创建 router 实例，然后传入 `routes` 配置
 //还可以传入其它配置参数
 const router = new VueRouter({
-	routes // （缩写）相当于 routes: routes
+	routes, // （缩写）相当于 routes: routes
+	scrollBehavior(to,from,savedPosition){
+		//debugger;
+
+		//return { x: 0, y: 0 }
+	},
+	linkActiveClass:'router-link-active-test',
+	linkExactActiveClass: 'router-link-exact-active-test'
 })
 
 //4. 创建和挂载根实例
